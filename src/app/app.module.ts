@@ -13,6 +13,12 @@ import { HttpClientModule} from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { DataTablesModule } from 'angular-datatables';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DataTableComponent } from './data-table/data-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+
 
 @NgModule({
   declarations: [
@@ -22,6 +28,7 @@ import { DataTablesModule } from 'angular-datatables';
     ListStudentComponent,
     LoginStudentComponent,
     RegisterationStudentComponent,
+    DataTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,8 +36,11 @@ import { DataTablesModule } from 'angular-datatables';
     NgbModule,
     HttpClientModule,
     ReactiveFormsModule,
-    DataTablesModule
-
+    DataTablesModule,
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]
