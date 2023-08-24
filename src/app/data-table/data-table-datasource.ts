@@ -2,37 +2,30 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
-import { Observable, of as observableOf, merge } from 'rxjs';
+import { Observable, of as observableOf, merge, BehaviorSubject } from 'rxjs';
+import { StudentsService } from '../students.service';
+import { inject } from '@angular/core';
+import { error } from 'jquery';
 
 // TODO: Replace this with your own data model type
 export interface DataTableItem {
   name: string;
   id: number;
+  email:string;
 }
 
 // TODO: replace this with real data from your application
+
 const EXAMPLE_DATA: DataTableItem[] = [
-  {id: 1, name: 'Hydrogen'},
-  {id: 2, name: 'Helium'},
-  {id: 3, name: 'Lithium'},
-  {id: 4, name: 'Beryllium'},
-  {id: 5, name: 'Boron'},
-  {id: 6, name: 'Carbon'},
-  {id: 7, name: 'Nitrogen'},
-  {id: 8, name: 'Oxygen'},
-  {id: 9, name: 'Fluorine'},
-  {id: 10, name: 'Neon'},
-  {id: 11, name: 'Sodium'},
-  {id: 12, name: 'Magnesium'},
-  {id: 13, name: 'Aluminum'},
-  {id: 14, name: 'Silicon'},
-  {id: 15, name: 'Phosphorus'},
-  {id: 16, name: 'Sulfur'},
-  {id: 17, name: 'Chlorine'},
-  {id: 18, name: 'Argon'},
-  {id: 19, name: 'Potassium'},
-  {id: 20, name: 'Calcium'},
+  {id: 1, name: 'Hydrogen',email:'hass@gmail.com'},
+  {id: 2, name: 'Helium',email:'hass@gmail.com'},
+  {id: 3, name: 'Lithium',email:'hass@gmail.com'},
+  {id: 4, name: 'Beryllium',email:'hass@gmail.com'},
+
 ];
+
+
+
 
 /**
  * Data source for the DataTable view. This class should
@@ -40,13 +33,27 @@ const EXAMPLE_DATA: DataTableItem[] = [
  * (including sorting, pagination, and filtering).
  */
 export class DataTableDataSource extends DataSource<DataTableItem> {
-  data: DataTableItem[] = EXAMPLE_DATA;
+  private dataSuject = new BehaviorSubject<DataTableItem[]>([]);
+  // dataFromApi: any[] = []
+  // private srv = inject(StudentsService)
+   dataFromApi: any = [];
+
+
+  // data: DataTableItem[] = EXAMPLE_DATA;
+  data: DataTableItem[] = [];
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
-  constructor() {
+
+  constructor(private srv:StudentsService) {
     super();
+
   }
+
+
+
+
+
 
   /**
    * Connect this data source to the table. The table will only update when
@@ -62,7 +69,15 @@ export class DataTableDataSource extends DataSource<DataTableItem> {
           return this.getPagedData(this.getSortedData([...this.data ]));
         }));
     } else {
-      throw Error('Please set the paginator and sort on the data source before connecting.');
+      this.srv.getData().subscribe((apiData: any) =>{
+        this.data = apiData as DataTableItem[];
+        this.dataSuject.next(apiData);
+      },(error) =>{
+        console.error('Error fetching data',error)
+      });
+
+      return this.dataSuject.asObservable();
+      // throw Error('Please set the paginator and sort on the data source before connecting.');
     }
   }
 
@@ -99,6 +114,7 @@ export class DataTableDataSource extends DataSource<DataTableItem> {
       switch (this.sort?.active) {
         case 'name': return compare(a.name, b.name, isAsc);
         case 'id': return compare(+a.id, +b.id, isAsc);
+        case 'email': return compare(+a.email,+b.email,isAsc);
         default: return 0;
       }
     });

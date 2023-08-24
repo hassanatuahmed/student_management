@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +10,19 @@ export class StudentsService {
 
   constructor(private http:HttpClient) { }
 
+
+  getData(): Observable<DataTransferItem[]>{
+    return this.http.get<DataTransferItem[]>(this.url);
+  }
+
   getAllStudent(){
     return this.http.get(this.url);
 
   }
-  saveStudentData(data : any){
+
+
+
+saveStudentData(data : any){
     console.log(data);
     return this.http.post(this.url,data)
 

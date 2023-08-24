@@ -15,24 +15,11 @@ export class ListStudentComponent implements OnInit {
 
   ngOnInit():void{
 
-    // this.dtOptions = {
-    //   // data:this.studentData,
-
-
-    //   pagingType:'full_numbers',
-    //   pageLength:5,
-    //   processing:true,
-    //   searching:true,
-
-    //   lengthMenu:[5,10,15,50]
-    // }
-
     this.student.getAllStudent().subscribe((allData) =>{
       console.log(allData)
       this.studentData = allData;
 
     });
-
 
   }
 
