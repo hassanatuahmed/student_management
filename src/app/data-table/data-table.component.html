@@ -1,4 +1,9 @@
 <div class="mat-elevation-z8 data-table">
+
+  <div *ngIf="message" class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Success!</strong> Student Deleted.
+    <button (click)="closeMe()" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
   <table mat-table class="full-width-table" matSort aria-label="Elements" [dataSource]="dataSource">
     <!-- Id Column -->
     <ng-container matColumnDef="id">

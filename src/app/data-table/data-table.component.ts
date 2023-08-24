@@ -13,6 +13,7 @@ import { DataTableDataSource, DataTableItem } from './data-table-datasource';
   styleUrls: ['./data-table.component.css']
 })
 export class DataTableComponent implements AfterViewInit {
+  message:boolean = false;
   dataSource: DataTableDataSource = new DataTableDataSource(this.srv)
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -39,10 +40,18 @@ export class DataTableComponent implements AfterViewInit {
 
   deleteStudent(id:number){
     this.srv.deleteStudent(id).subscribe((result) =>{
+      this.message = true;
       console.log(result);
       // this.ngOnInit();
 
     });
 
   }
+
+  closeMe(){
+    this.message = false;
+
+  }
+
+
 }
